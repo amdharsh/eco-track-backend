@@ -7,11 +7,15 @@ export default function Home() {
 
   const fetchDashboardData = async () => {
     try {
-      const scoreRes = await fetch('https://eco-track-backend-fmi7.vercel.app/api/score', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 })
-      });
+      const scoreRes = await fetch('/api/score', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 })
+});
+        method: 'POST';
+        headers: { 'Content-Type'; 'application/json' };
+        body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 });
+      
       const scoreData = await scoreRes.json();
       setScore(scoreData.sustainabilityScore);
 
