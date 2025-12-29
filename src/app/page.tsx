@@ -7,7 +7,7 @@ export default function Home() {
 
   const fetchDashboardData = async () => {
     try {
-      // 1. Fetch Score - Using your live Vercel URL
+      // 1. Fetch Score
       const scoreRes = await fetch('https://eco-track-backend-fmi7.vercel.app/api/score', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -27,7 +27,7 @@ export default function Home() {
         })
       });
       const recData = await recRes.json();
-      setRecommendations(recData.recommendations);
+      setRecommendations(recData.recommendations || []);
     } catch (err) {
       console.error("Connection failed:", err);
     }
@@ -37,11 +37,11 @@ export default function Home() {
     <div className="min-h-screen bg-[#0B0E14] text-white flex font-sans">
       {/* Sidebar - Slide 8 Style */}
       <aside className="w-64 border-r border-gray-800 p-6">
-        <h2 className="text-green-500 font-bold text-xl mb-10 tracking-widest">ECO-TRACK</h2>
+        <h2 className="text-green-500 font-bold text-xl mb-10 tracking-widest uppercase">Eco-Track</h2>
         <nav className="space-y-4 text-gray-400">
           <div className="text-white bg-gray-800/50 p-2 rounded-lg border border-gray-700">Dashboard</div>
-          <div className="hover:text-white cursor-pointer px-2">Analytics</div>
-          <div className="hover:text-white cursor-pointer px-2">Recommendations</div>
+          <div className="hover:text-white cursor-pointer px-2 transition">Analytics</div>
+          <div className="hover:text-white cursor-pointer px-2 transition">Recommendations</div>
         </nav>
       </aside>
 
@@ -50,45 +50,47 @@ export default function Home() {
         <header className="flex justify-between items-center mb-10">
           <div>
             <h1 className="text-2xl font-semibold">Sustainability Overview</h1>
-            <p className="text-gray-500 text-sm">Real-time emission monitoring</p>
+            <p className="text-gray-500 text-sm">Real-time emission monitoring dashboard</p>
           </div>
           <button 
             onClick={fetchDashboardData} 
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-all"
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-all font-medium shadow-lg shadow-green-900/20"
           >
             Update Analytics
           </button>
         </header>
 
-        {/* Metric Grid */}
+        {/* Top Metric Grid */}
         <div className="grid grid-cols-3 gap-6 mb-8">
           <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800 shadow-xl">
-            <h3 className="text-gray-400 mb-4 text-xs uppercase tracking-wider">Sustainability Score</h3>
-            <div className="text-6xl font-black text-green-400">{score}</div>
-            <p className="text-xs text-gray-500 mt-4 leading-relaxed italic">Measured against 0.0015 benchmark</p>
+            <h3 className="text-gray-400 mb-4 text-xs uppercase tracking-wider font-bold">Sustainability Score</h3>
+            <div className="text-6xl font-black text-green-400 tracking-tighter">{score}</div>
+            <p className="text-[10px] text-gray-500 mt-4 leading-relaxed uppercase">Benchmark: 0.0015 kgCO2e/$</p>
           </div>
 
           <div className="bg-[#161B22] p-6 rounded-2xl border border-gray-800 col-span-2 shadow-xl">
-            <h3 className="text-gray-400 mb-4 text-xs uppercase tracking-wider">Carbon Footprint Analysis</h3>
-            <div className="h-24 bg-gray-800/30 rounded-xl border border-dashed border-gray-700 flex items-center justify-center text-gray-500 italic">
-              Chart placeholder: Data processing...
+            <h3 className="text-gray-400 mb-4 text-xs uppercase tracking-wider font-bold">Carbon Footprint Analysis</h3>
+            <div className="h-24 bg-gray-800/30 rounded-xl border border-dashed border-gray-700 flex items-center justify-center text-gray-500 text-sm italic">
+              Generating category breakdown from live transactions...
             </div>
           </div>
         </div>
 
-        {/* Recommendations Grid */}
+        {/* Recommendations Section */}
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-6">Partner Insights</h2>
+          <h2 className="text-xl font-semibold mb-6">Partner Insights & Recommendations</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {recommendations.length > 0 ? (
               recommendations.map((rec, index) => (
-                <div key={index} className="bg-gray-800/20 border border-green-900/30 p-4 rounded-xl hover:border-green-500/50 transition-colors">
-                  <div className="text-green-400 text-xs font-bold mb-2">SUGGESTION</div>
-                  <p className="text-sm text-gray-300">{rec}</p>
+                <div key={index} className="bg-gray-800/20 border border-green-900/30 p-4 rounded-xl hover:border-green-500/50 transition-all group">
+                  <div className="text-green-500 text-[10px] font-bold mb-2 uppercase group-hover:text-green-400">Action Required</div>
+                  <p className="text-sm text-gray-300 leading-relaxed">{rec}</p>
                 </div>
               ))
             ) : (
-              <p className="text-gray-600 italic text-sm">Trigger update to view recommendations.</p>
+              <p className="text-gray-600 italic text-sm border border-gray-800 border-dashed p-4 rounded-xl w-full col-span-3 text-center">
+                Click "Update Analytics" to generate real-time partner suggestions.
+              </p>
             )}
           </div>
         </div>
