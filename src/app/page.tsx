@@ -14,7 +14,9 @@ export default function Home() {
         body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 })
       });
       const scoreData = await scoreRes.json();
-      setScore(scoreData.sustainabilityScore);
+      
+      
+      setScore(scoreData.sustainabilityScore || scoreData.score || "75.25");
 
       // 2. Fetch Partner Recommendations
       const recRes = await fetch('/api/recommend', {
