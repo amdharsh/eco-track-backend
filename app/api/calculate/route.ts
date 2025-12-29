@@ -4,7 +4,7 @@ export async function POST(request: Request) {
   try {
     const { amount, mccFactor, countryMultiplier } = await request.json();
 
-    // Formula: Amount (USD) x Base Factor (MCC) x Country Multiplier
+    // Logic: Amount * Base Factor * Multiplier
     const totalEmission = amount * mccFactor * countryMultiplier;
 
     return NextResponse.json({ 
@@ -12,6 +12,6 @@ export async function POST(request: Request) {
       unit: "kgCO2e" 
     });
   } catch (error) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid request payload" }, { status: 400 });
   }
 }
