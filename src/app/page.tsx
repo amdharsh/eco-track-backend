@@ -7,28 +7,31 @@ export default function Home() {
 
   const fetchDashboardData = async () => {
     try {
-      const scoreRes  = await fetch('/api/score', {  });
-  headers: { 'Content-Type'; 'application/json' };
-  body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 });
-        method: 'POST';
-        headers: { 'Content-Type'; 'application/json' };
-        body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 });
-      
+      // 1. Fetch Sustainability Score (Note: NO curly braces around /api/score)
+      const scoreRes = await fetch('/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 })
+      });
       const scoreData = await scoreRes.json();
       setScore(scoreData.sustainabilityScore);
 
-      const recRes = await fetch('/api/recommend', { }), {
+      // 2. Fetch Partner Recommendations
+      const recRes = await fetch('/api/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ utilitySpending: 2500, fuelSpending: 1200, avgIntensity: 0.003 })
+        body: JSON.stringify({ 
+          utilitySpending: 2500, 
+          fuelSpending: 1200, 
+          avgIntensity: 0.003 
+        })
       });
       const recData = await recRes.json();
       setRecommendations(recData.recommendations || []);
     } catch (err) {
-      console.error("Fetch failed:", err);
+      console.error("Connection failed:", err);
     }
   };
-
   return (
     <div className="min-h-screen bg-[#0B0E14] text-white flex">
       <aside className="w-64 border-r border-gray-800 p-6">
