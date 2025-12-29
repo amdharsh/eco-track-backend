@@ -6,24 +6,20 @@ export default function Home() {
   const [recommendations, setRecommendations] = useState([]);
 
   const fetchDashboardData = async () => {
-    try {
-      // 1. Fetch Sustainability Score (Note: NO curly braces around /api/score)
-      const scoreRes = await fetch('/api/score', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          totalEmissions: 150.5, 
-          totalSpending: 50000 
-        })
-      });
-      
-      
-      
-      const scoreData = await scoreRes.json();
-      // This checks for the key, and if missing, falls back to a calculated mock for the demo
-      setScore(scoreData.sustainabilityScore || scoreData.score || "75.25");
+  try {
+    // 1. Fetch from your internal API
+    const scoreRes = await fetch('/api/score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 })
+    });
+    
+    const scoreData = await scoreRes.json();
+    
+    // 2. Update state with fallback to ensure the UI stays live
+    setScore(scoreData.sustainabilityScore || scoreData.score || "75.25");
 
-      // 2. Fetch Partner Recommendations
+      // 3. Fetch Partner Recommendations
       const recRes = await fetch('/api/recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
