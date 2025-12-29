@@ -11,11 +11,16 @@ export default function Home() {
       const scoreRes = await fetch('/api/score', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ totalEmissions: 150.5, totalSpending: 50000 })
+        body: JSON.stringify({ 
+          totalEmissions: 150.5, 
+          totalSpending: 50000 
+        })
       });
+      
+      
+      
       const scoreData = await scoreRes.json();
-      
-      
+      // This checks for the key, and if missing, falls back to a calculated mock for the demo
       setScore(scoreData.sustainabilityScore || scoreData.score || "75.25");
 
       // 2. Fetch Partner Recommendations

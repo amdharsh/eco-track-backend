@@ -16,6 +16,8 @@ export async function POST(request: Request) {
       intensity: avgIntensity.toFixed(5)
     });
   } catch (error) {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
-}
+      return NextResponse.json({ sustainabilityScore: "0.00", error: "Calculation failed" }, { status: 400 });
+    }
+
+
+} 
